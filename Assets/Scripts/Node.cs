@@ -5,7 +5,7 @@ using UnityEngine;
 public class Node : MonoBehaviour
 { 
     private Dictionary<Node, int> _dic;
-    public bool Selected { get; set; }
+    public bool isVisited;
 
     public Dictionary<Node, int> nodeDic
     {

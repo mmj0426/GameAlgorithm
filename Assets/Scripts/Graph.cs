@@ -5,9 +5,36 @@ using UnityEngine;
 
 public class Graph : MonoBehaviour
 {
+    private bool _isRun = false;
+    public bool IsRun
+    {
+        set
+        {
+            if (value == false)
+            {
+                ResetNodes();
+            }
+
+            _isRun = value;
+        }
+        get
+        {
+            return _isRun;
+        }
+    }
+
     public List<Node> nodeList;
     public Node startNode;
     public Node endNode;
+
+    public void ResetNodes()
+    {
+        for(int i = 1; i < nodeList.Count; i ++)
+        {
+            nodeList[i].isVisited = false;
+            nodeList[i].GetComponent<Renderer>().material.color = Color.white;
+        }
+    }
 
     public void Init()
     {

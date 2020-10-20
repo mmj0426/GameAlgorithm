@@ -35,8 +35,6 @@ public class Dijkstra : MonoBehaviour
     int current;
     int distance;
 
-    bool IsFinished { get; set; }
-
     private Dictionary<TKey, TValue> Make_pair<TKey, TValue>(TKey key, TValue value)
     {
         var dic = new Dictionary<TKey, TValue>();
@@ -59,16 +57,14 @@ public class Dijkstra : MonoBehaviour
         {
             d[i] = int.MaxValue;
         }
-
-        IsFinished = false;
     }
 
 
     public void onClick()
     {
-        if(IsFinished) { return; }
+        if(graph.IsRun) { return; }
 
-        IsFinished = true;
+        graph.IsRun = true;
 
         startNode = graph.startNode;
         endNode = graph.endNode;
@@ -117,11 +113,11 @@ public class Dijkstra : MonoBehaviour
             }
             yield return null;
         }
-        DrawPath();
-        IsFinished = false;
-    }
 
-    public void DrawPath()
+        StartCoroutine(DrawPath());
+    } 
+
+    public IEnumerator DrawPath()
     {
         path.Push(end);
 
@@ -139,10 +135,15 @@ public class Dijkstra : MonoBehaviour
             if (path.First() != start && path.First() != end)
             {
                 GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.green;
+                yield return new WaitForSeconds(1f);
             }
-                path.Pop();
+            path.Pop();
         }
         costText.text = "Cost : " + d[end].ToString();
         Debug.Log("DIJKSTRA 비용 : " + d[end]);
+
+        yield return new WaitForSeconds(1f);
+
+        graph.IsRun = false;
     }
 }
