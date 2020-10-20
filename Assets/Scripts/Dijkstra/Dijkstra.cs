@@ -15,8 +15,8 @@ public class Dijkstra : MonoBehaviour
     public UnityEngine.UI.Text costText;
 
     public Graph graph;
-    public Node startNode;
-    public Node endNode;
+    private Node startNode;
+    private Node endNode;
 
     //private FastPriorityQueue<Node> priority_queue;
     private SimplePriorityQueue<Dictionary<Node, int>> priority_queue;
@@ -34,6 +34,8 @@ public class Dijkstra : MonoBehaviour
     int end;
     int current;
     int distance;
+
+    bool IsFinished { get; set; }
 
     private Dictionary<TKey, TValue> Make_pair<TKey, TValue>(TKey key, TValue value)
     {
@@ -58,12 +60,26 @@ public class Dijkstra : MonoBehaviour
             d[i] = int.MaxValue;
         }
 
+        IsFinished = false;
+    }
+
+
+    public void onClick()
+    {
+        if(IsFinished) { return; }
+
+        IsFinished = true;
+
+        startNode = graph.startNode;
+        endNode = graph.endNode;
+
         start = Convert.ToInt32(startNode.name);
         end = Convert.ToInt32(endNode.name);
 
+        Debug.Log("Start : " + start + "End : " + end);
+
         d[start] = 0;
 
-        //priority_queue.Enqueue(Make_pair(start, 0), 0);
         priority_queue.Enqueue(Make_pair(startNode, 0), 0);
 
         StartCoroutine(Active());
@@ -102,13 +118,12 @@ public class Dijkstra : MonoBehaviour
             yield return null;
         }
         DrawPath();
+        IsFinished = false;
     }
 
     public void DrawPath()
     {
         path.Push(end);
-
-        Debug.Log("Draw Start");
 
         for(int i = p[end]; i != 0;)
         {
@@ -118,24 +133,14 @@ public class Dijkstra : MonoBehaviour
             
         }
 
-        Debug.Log("Draw End");
-
         while (path.Count !=0)
         {
             Debug.Log(path.First());
-            if(path.First() == start)
-            {
-                GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.red;
-            }
-            else if(path.First() == end)
-            {
-                GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.blue;
-            }
-            else
+            if (path.First() != start && path.First() != end)
             {
                 GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.green;
             }
-            path.Pop();
+                path.Pop();
         }
         costText.text = "Cost : " + d[end].ToString();
         Debug.Log("DIJKSTRA 비용 : " + d[end]);

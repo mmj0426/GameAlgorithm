@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Node : MonoBehaviour
-{
+{ 
     private Dictionary<Node, int> _dic;
+    public bool Selected { get; set; }
+
     public Dictionary<Node, int> nodeDic
     {
         get

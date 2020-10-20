@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Graph : MonoBehaviour
 {
     public List<Node> nodeList;
+    public Node startNode;
+    public Node endNode;
+
     public void Init()
     {
         nodeList[1].nodeDic[nodeList[2]] = 2;
@@ -33,6 +37,56 @@ public class Graph : MonoBehaviour
         nodeList[6].nodeDic[nodeList[3]] = 5;
         nodeList[6].nodeDic[nodeList[5]] = 2;
 
+    }
+
+    private void Start()
+    {
+        startNode = null;
+        endNode = null;
+    }
+
+    private void Update()
+    {
+        // 마우스 포지션 값을 게임 월드상의 레이로 변환
+        Vector3 mousePosition = Input.mousePosition;
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.GetComponent<Node>() == null) { return; }
+
+                if(startNode != null)
+                {
+                    startNode.GetComponent<Renderer>().material.color = Color.white;
+                }
+
+                hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                Debug.Log(hit.collider.gameObject.name);
+                startNode = hit.collider.gameObject.GetComponent<Node>();
+            }
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if(hit.collider.GetComponent<Node>() == null) { return; }
+
+                if (endNode != null)
+                {
+                    endNode.GetComponent<Renderer>().material.color = Color.white;
+                }
+
+                hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+                Debug.Log(hit.collider.gameObject.name);
+                endNode = hit.collider.gameObject.GetComponent<Node>();
+            }
+        }
     }
 }
 
