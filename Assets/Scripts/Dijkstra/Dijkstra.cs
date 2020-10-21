@@ -132,7 +132,7 @@ public class Dijkstra : MonoBehaviour
         while (path.Count !=0)
         {
             Debug.Log(path.First());
-            if (path.First() != start && path.First() != end)
+            if (path.First() != start || path.First() != end)
             {
                 GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.green;
                 yield return new WaitForSeconds(1f);
