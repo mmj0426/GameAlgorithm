@@ -2612,6 +2612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828fac7e60d1af041b5f149c9496474b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathText: {fileID: 2099283299}
   graph: {fileID: 2070312769}
 --- !u!114 &1510937280
 MonoBehaviour:
@@ -2625,6 +2626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 610ae95c3517b234b8c78e541a3772a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathText: {fileID: 2099283299}
   graph: {fileID: 2070312769}
 --- !u!1 &1600123887
 GameObject:
@@ -2960,7 +2962,7 @@ GameObject:
   - component: {fileID: 1990016647}
   - component: {fileID: 1990016646}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Node
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3093,7 +3095,7 @@ GameObject:
   - component: {fileID: 2099283300}
   - component: {fileID: 2099283299}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Result
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3115,7 +3117,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -212, y: -27}
+  m_AnchoredPosition: {x: -291, y: -34.358}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &2099283299
@@ -3144,11 +3146,11 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 'Cost : 0'
 --- !u!222 &2099283300

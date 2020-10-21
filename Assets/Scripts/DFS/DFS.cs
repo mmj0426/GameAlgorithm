@@ -8,11 +8,19 @@ using UnityEngine;
 
 public class DFS : MonoBehaviour
 {
+    public UnityEngine.UI.Text pathText;
+
+    private string path;
+
     public Graph graph;
 
     private Node startNode;
     private Node endNode;
 
+    private void Start()
+    {
+        path = "DFS : ";
+    }
 
     public void onClick()
     {
@@ -26,26 +34,22 @@ public class DFS : MonoBehaviour
 
         //StartCoroutine("Active", startNode);
 
+        path = "DFS : ";
+
         Active(startNode);
 
-        //graph.IsRun = false;
-    }
+        pathText.text = path;
 
+        Invoke("Off", 1f);
+    }
     private void Active(Node _node)
     {
         _node.isVisited = true;
 
         Debug.Log("DFS : " + _node);
-
-        _node.GetComponent<Renderer>().material.color = Color.green;
+        path = path + _node.name + "    ";
 
         int current = Convert.ToInt32(_node.name);
-
-        if (endNode == _node)
-        {
-            _node.GetComponent<Renderer>().material.color = Color.blue;
-            
-        }
 
         foreach (var v in graph.nodeList[current].nodeDic)
         {
@@ -54,6 +58,10 @@ public class DFS : MonoBehaviour
                 Active(v.Key);
             }
         }
-        
+    }
+
+    private void Off()
+    {
+        graph.IsRun = false;
     }
 }

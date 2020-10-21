@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
 public class BFS : MonoBehaviour
 {
+    public UnityEngine.UI.Text pathText;
+
+    private string path;
+
     public Graph graph;
     private Queue<Node> nodeQueue;
 
@@ -16,6 +21,7 @@ public class BFS : MonoBehaviour
     void Start()
     {
         nodeQueue = new Queue<Node>();
+        path = "BFS : ";
     }
 
     public void onClick()
@@ -36,6 +42,7 @@ public class BFS : MonoBehaviour
         Debug.Log("BFS 클릭 -> Start : " + startNode.name + " End : " + endNode.name);
 
         StartCoroutine(Active());
+
     }
     private IEnumerator Active()
     {
@@ -45,12 +52,8 @@ public class BFS : MonoBehaviour
             int current = Convert.ToInt32(rootNode.name);
 
             Debug.Log("BFS : " + rootNode);
-
-            if (endNode == rootNode)
-            {
-                endNode.GetComponent<Renderer>().material.color = Color.blue;
-                break;
-            }
+            path = path +  rootNode.name + "    ";
+            pathText.text = path;
 
             nodeQueue.Dequeue();
             foreach (var v in graph.nodeList[current].nodeDic)
@@ -59,16 +62,13 @@ public class BFS : MonoBehaviour
                 {
                     v.Key.isVisited = true;
                     nodeQueue.Enqueue(graph.nodeList[Convert.ToInt32(v.Key.name)]);
-                    v.Key.GetComponent<Renderer>().material.color = Color.green;
-
-                    yield return new WaitForSeconds(1f);
                 }
             }
         yield return null;
         }
-
-        yield return new WaitForSeconds(1f);
-
+        yield return new WaitForSeconds(2f);
+        path = "BFS : ";
+        yield return null;
         graph.IsRun = false;
     }
 }
