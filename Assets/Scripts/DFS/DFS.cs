@@ -38,9 +38,9 @@ public class DFS : MonoBehaviour
 
         Active(startNode);
 
-        pathText.text = path;
-
         Invoke("Off", 1f);
+
+        pathText.text = path;
     }
     private void Active(Node _node)
     {
