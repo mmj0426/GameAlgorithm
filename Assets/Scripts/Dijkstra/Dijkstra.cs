@@ -15,8 +15,9 @@ public class Dijkstra : MonoBehaviour
     public UnityEngine.UI.Text costText;
 
     public Graph graph;
-    private Node startNode;
-    private Node endNode;
+    public FSM fsm;
+    public Node startNode;
+    public Node endNode;
 
     //private FastPriorityQueue<Node> priority_queue;
     private SimplePriorityQueue<Dictionary<Node, int>> priority_queue;
@@ -25,7 +26,7 @@ public class Dijkstra : MonoBehaviour
 
     //private List<int> path;
 
-    private Stack<int> path;
+    public Stack<int> path;
     private int[] p = new int[7];
 
     public bool alreadyPush = false;
@@ -52,6 +53,7 @@ public class Dijkstra : MonoBehaviour
     {
         path = new Stack<int>();
         priority_queue = new SimplePriorityQueue<Dictionary<Node, int>>();
+        fsm = GetComponent<FSM>();
 
         for (int i = 1; i < 7; i++)
         {
@@ -59,16 +61,8 @@ public class Dijkstra : MonoBehaviour
         }
     }
 
-
-    public void onClick()
+    public void ActiveDijkstra()
     {
-        if(graph.IsRun) { return; }
-
-        graph.IsRun = true;
-
-        startNode = graph.startNode;
-        endNode = graph.endNode;
-
         start = Convert.ToInt32(startNode.name);
         end = Convert.ToInt32(endNode.name);
 
@@ -79,6 +73,18 @@ public class Dijkstra : MonoBehaviour
         priority_queue.Enqueue(Make_pair(startNode, 0), 0);
 
         StartCoroutine(Active());
+    }
+
+    public void onClick()
+    {
+        if (graph.IsRun) { return; }
+
+        graph.IsRun = true;
+
+        startNode = graph.startNode;
+        endNode = graph.endNode;
+
+        ActiveDijkstra();
     }
 
     private IEnumerator Active()
@@ -115,7 +121,10 @@ public class Dijkstra : MonoBehaviour
         }
 
         StartCoroutine(DrawPath());
-    } 
+    }
+
+    public int pathNode;
+    
 
     public IEnumerator DrawPath()
     {
@@ -137,13 +146,13 @@ public class Dijkstra : MonoBehaviour
                 GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.green;
                 yield return new WaitForSeconds(1f);
             }
-            path.Pop();
+            pathNode = path.Pop();
+            yield return new WaitUntil(() => fsm.is_pop == true );
         }
+
         costText.text = "Cost : " + d[end].ToString();
         Debug.Log("DIJKSTRA 비용 : " + d[end]);
 
-        yield return new WaitForSeconds(1f);
-
-        graph.IsRun = false;
+        graph.IsRun = false; 
     }
 }

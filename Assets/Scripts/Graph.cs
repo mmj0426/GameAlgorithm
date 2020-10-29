@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,6 +23,8 @@ public class Graph : MonoBehaviour
             return _isRun;
         }
     }
+
+    public Vector3 targetPos = Vector3.zero;
 
     public List<Node> nodeList;
     public Node startNode;
@@ -85,7 +88,7 @@ public class Graph : MonoBehaviour
             {
                 if (hit.collider.GetComponent<Node>() == null) { return; }
 
-                if(startNode != null)
+                if (startNode != null)
                 {
                     startNode.GetComponent<Renderer>().material.color = Color.white;
                 }
@@ -96,13 +99,13 @@ public class Graph : MonoBehaviour
             }
         }
 
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
             {
-                if(hit.collider.GetComponent<Node>() == null) { return; }
+                if (hit.collider.GetComponent<Node>() == null) { return; }
 
                 if (endNode != null)
                 {
@@ -114,6 +117,18 @@ public class Graph : MonoBehaviour
                 endNode = hit.collider.gameObject.GetComponent<Node>();
             }
         }
+
+        //목적지 좌표 설정
+        if (Input.GetMouseButton(2))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 1000))
+            {
+                targetPos = hit.point;
+            }
+        }
+
+        Debug.Log("TargetPos : " + targetPos);
     }
 }
 
