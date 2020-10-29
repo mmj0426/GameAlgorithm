@@ -2422,7 +2422,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 2070312769}
+  dijkstra: {fileID: 0}
   cube: {fileID: 1374691348}
+  targetNode: 0
+  decelerationTweaker: 0.3
+  is_pop: 0
 --- !u!1 &1429314945
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,7 +2777,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   costText: {fileID: 2099283299}
   graph: {fileID: 2070312769}
+  fsm: {fileID: 0}
+  startNode: {fileID: 0}
+  endNode: {fileID: 0}
   alreadyPush: 0
+  pathNode: 0
 --- !u!4 &1510937278
 Transform:
   m_ObjectHideFlags: 0
@@ -2829,7 +2837,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 2070312769}
+  dijkstra: {fileID: 0}
   cube: {fileID: 1374691348}
+  targetNode: 0
+  decelerationTweaker: 0.3
+  is_pop: 0
 --- !u!1 &1600123887
 GameObject:
   m_ObjectHideFlags: 0
@@ -3223,7 +3235,10 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'StartNode : Red -Mouse Left Click
 
-    EndNode : Blue - Mouse Right Click'
+    EndNode : Blue - Mouse Right Click
+
+    FSM
+    : Mouse Middle Click'
 --- !u!222 &1990016647
 CanvasRenderer:
   m_ObjectHideFlags: 0
