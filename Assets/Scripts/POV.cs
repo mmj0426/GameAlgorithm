@@ -10,11 +10,11 @@ using System.Linq;
 using UnityEngine.UIElements;
 using System.Net.Http.Headers;
 
-public class Dijkstra : MonoBehaviour
+public class POV : MonoBehaviour
 {
     public UnityEngine.UI.Text costText;
 
-    public Graph graph;
+    public POVGraph graph;
     public FSM fsm;
     public Node startNode;
     public Node endNode;
@@ -22,12 +22,12 @@ public class Dijkstra : MonoBehaviour
     //private FastPriorityQueue<Node> priority_queue;
     private SimplePriorityQueue<Dictionary<Node, float>> priority_queue;
 
-    private float[] d = new float[7];
+    private float[] d = new float[30];
 
     //private List<int> path;
 
     public Stack<int> path;
-    private int[] p = new int[7];
+    private int[] p = new int[30];
 
     public bool alreadyPush = false;
 
@@ -55,7 +55,7 @@ public class Dijkstra : MonoBehaviour
         priority_queue = new SimplePriorityQueue<Dictionary<Node, float>>();
         fsm = GetComponent<FSM>();
 
-        for (int i = 1; i < 7; i++)
+        for (int i = 1; i < 30; i++)
         {
             d[i] = float.MaxValue;
         }
@@ -77,10 +77,6 @@ public class Dijkstra : MonoBehaviour
 
     public void onClick()
     {
-        if (graph.IsRun) { return; }
-
-        graph.IsRun = true;
-
         startNode = graph.startNode;
         endNode = graph.endNode;
 
@@ -89,10 +85,10 @@ public class Dijkstra : MonoBehaviour
 
     private IEnumerator Active()
     {
-        while(priority_queue.Count != 0)
+        while (priority_queue.Count != 0)
         {
             Dictionary<Node, float> dic = priority_queue.First;
-            
+
             foreach (var v in dic)
             {
                 current = Convert.ToInt32(v.Key.name);
@@ -110,7 +106,7 @@ public class Dijkstra : MonoBehaviour
 
                 float nextDistance = distance + v.Value;
 
-                if(nextDistance < d[next])
+                if (nextDistance < d[next])
                 {
                     d[next] = nextDistance;
                     priority_queue.Enqueue(Make_pair(graph.nodeList[next], -nextDistance), -nextDistance);
@@ -124,35 +120,32 @@ public class Dijkstra : MonoBehaviour
     }
 
     public int pathNode;
-    
+
 
     public IEnumerator DrawPath()
     {
         path.Push(end);
 
-        for(int i = p[end]; i != 0;)
+        for (int i = p[end]; i != 0;)
         {
             path.Push(i);
 
             i = p[i];
-            
+
         }
 
-        while (path.Count !=0)
+        while (path.Count != 0)
         {
             Debug.Log(path.First());
             if (path.First() != start || path.First() != end)
             {
                 GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.green;
-                yield return new WaitForSeconds(1f);
+                yield return null;
             }
             pathNode = path.Pop();
-            yield return new WaitUntil(() => fsm.is_pop == true );
+            yield return new WaitUntil(() => fsm.is_pop == true);
         }
 
-        costText.text = "Cost : " + d[end].ToString();
-        Debug.Log("DIJKSTRA 비용 : " + d[end]);
 
-        graph.IsRun = false; 
     }
 }

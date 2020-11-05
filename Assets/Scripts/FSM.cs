@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class FSM : MonoBehaviour
 {
-    public Graph graph;
-    public Dijkstra dijkstra;
+    public POVGraph graph;
+    public POV pov_dijkstra;
     public GameObject cube;
 
     private Node startNode;
@@ -16,7 +16,7 @@ public class FSM : MonoBehaviour
     private Vector3 startPos;
     private float distance;
 
-    private float maxSpeed = 0.1f;
+    private float maxSpeed = 0.5f;
 
     public int targetNode;
     [SerializeField]
@@ -38,7 +38,7 @@ public class FSM : MonoBehaviour
         distance = float.MaxValue;
 
 
-        dijkstra = GetComponent<Dijkstra>();
+        pov_dijkstra = GetComponent<POV>();
     }
     // Update is called once per frame
     void Update()
@@ -49,10 +49,6 @@ public class FSM : MonoBehaviour
     
     public void onClick()
     {
-        if (graph.IsRun) { return; }
-
-        graph.IsRun = true;
-
         float _distance = float.MaxValue;
         foreach(var v in graph.nodeList)
         {
@@ -81,10 +77,10 @@ public class FSM : MonoBehaviour
         Debug.Log("FSM EndNode : " + endNode);
 
         targetNode = Convert.ToInt32(startNode.name);
-        dijkstra.startNode = startNode;
-        dijkstra.endNode = endNode;
+        pov_dijkstra.startNode = startNode;
+        pov_dijkstra.endNode = endNode;
 
-        dijkstra.ActiveDijkstra();
+        pov_dijkstra.ActiveDijkstra();
 
         //StartNode로 Seek
         StartCoroutine(Seeking());
@@ -130,7 +126,7 @@ public class FSM : MonoBehaviour
 
     public IEnumerator Arriving()
     {
-        //조건문 바꿔야하는데 어케 넣어야할지 모르겠음
+        // 조건문 바꿔야하는데 어케 넣어야할지 모르겠음
         while(true)
         {
             velocity = velocity + (Arrive() * Time.deltaTime);
@@ -139,8 +135,6 @@ public class FSM : MonoBehaviour
             cube.transform.position = cube.transform.position + velocity;
             yield return null;
         }
-        yield return new WaitForSeconds(1.0f);
-        graph.IsRun = false;
     }
 
     public IEnumerator Seeking()
@@ -159,14 +153,14 @@ public class FSM : MonoBehaviour
             }
 
 
-            if (Vector3.Distance(GameObject.Find(targetNode.ToString()).transform.position, cube.transform.position) < 3f)
+            if (Vector3.Distance(GameObject.Find(targetNode.ToString()).transform.position, cube.transform.position) < 20f)
             {
                 if(targetNode.ToString() != endNode.name.ToString())
                 {
                     Debug.Log("TargetNode : " + targetNode);
                     is_pop = true;
-                    yield return new WaitForSeconds(1f);
-                    targetNode = dijkstra.pathNode;
+                    yield return null;
+                    targetNode = pov_dijkstra.pathNode;
                 }
 
 

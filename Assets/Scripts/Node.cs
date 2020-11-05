@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 { 
-    private Dictionary<Node, int> _dic;
+    private Dictionary<Node, float> _dic;
     public bool isVisited;
 
-    public Dictionary<Node, int> nodeDic
+    public Dictionary<Node, float> nodeDic
     {
         get
         {
             if (_dic == null)
             {
-                _dic = new Dictionary<Node, int>();
+                _dic = new Dictionary<Node, float>();
             }
             return _dic;
         }
