@@ -85,10 +85,6 @@ public class FSM : MonoBehaviour
         //StartNode로 Seek
         StartCoroutine(Seeking());
 
-        //Dijkstra로 이동
-
-        //EndNode -> pickPos(targetPos)로 이동
-
     }
 
     private Vector3 Seek()
@@ -126,7 +122,6 @@ public class FSM : MonoBehaviour
 
     public IEnumerator Arriving()
     {
-        // 조건문 바꿔야하는데 어케 넣어야할지 모르겠음
         while(true)
         {
             velocity = velocity + (Arrive() * Time.deltaTime);

@@ -36,6 +36,8 @@ public class POV : MonoBehaviour
     int current;
     float distance;
 
+    float heuristic;
+
     private Dictionary<TKey, TValue> Make_pair<TKey, TValue>(TKey key, TValue value)
     {
         var dic = new Dictionary<TKey, TValue>();
@@ -95,20 +97,22 @@ public class POV : MonoBehaviour
                 distance = -v.Value;
                 break;
             }
-
+        
             priority_queue.Dequeue();
 
             if (d[current] < distance) continue;
 
             foreach (var v in graph.nodeList[current].nodeDic)
             {
+                heuristic = Vector3.Distance(GameObject.Find(v.Key.name.ToString()).transform.position, endNode.transform.position);
+
                 int next = Convert.ToInt32(v.Key.name);
 
-                float nextDistance = distance + v.Value;
+                float nextDistance = distance + v.Value + heuristic;
 
                 if (nextDistance < d[next])
                 {
-                    d[next] = nextDistance;
+                    d[next] = nextDistance + heuristic;
                     priority_queue.Enqueue(Make_pair(graph.nodeList[next], -nextDistance), -nextDistance);
                     p[next] = current;
                 }
@@ -145,7 +149,6 @@ public class POV : MonoBehaviour
             pathNode = path.Pop();
             yield return new WaitUntil(() => fsm.is_pop == true);
         }
-
 
     }
 }
