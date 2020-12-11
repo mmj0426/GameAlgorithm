@@ -10,11 +10,11 @@ using System.Linq;
 using UnityEngine.UIElements;
 using System.Net.Http.Headers;
 
-public class POV : MonoBehaviour
+public class Astar : MonoBehaviour
 {
     public UnityEngine.UI.Text costText;
 
-    public POVGraph graph;
+    public AstarGraph graph;
     public FSM fsm;
     public Node startNode;
     public Node endNode;
@@ -144,11 +144,14 @@ public class POV : MonoBehaviour
             if (path.First() != start || path.First() != end)
             {
                 GameObject.Find(path.First().ToString()).GetComponent<Renderer>().material.color = Color.green;
+  
                 yield return null;
             }
+
             pathNode = path.Pop();
             yield return new WaitUntil(() => fsm.is_pop == true);
         }
 
+        
     }
 }

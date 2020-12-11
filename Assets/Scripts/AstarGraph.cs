@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class POVGraph : MonoBehaviour
+public class AstarGraph : MonoBehaviour
 {
     public Vector3 targetPos = Vector3.zero;
 
